@@ -41,7 +41,7 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCatagory("Appearance",[]),
 		new OptionCatagory("Controls",[]),
-		new OptionCategory("Android Controls",[]),
+		new OptionCatagory("Android Controls",[]),
 		new OptionCatagory("Exit",[]),
 	];
 	
