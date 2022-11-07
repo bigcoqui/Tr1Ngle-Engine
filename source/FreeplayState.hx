@@ -10,6 +10,7 @@ import Math;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+import openfl.utils.Assets as Que;
 #if desktop
 import sys.FileSystem;
 import sys.io.File;
@@ -63,8 +64,6 @@ class FreeplayState extends MusicBeatState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
-	
-		
 
 		 #if windows
 		 // Updating Discord Rich Presence
@@ -77,10 +76,6 @@ class FreeplayState extends MusicBeatState
 		isDebug = true;
 		#end
 
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
-
 		bg = new Sprite().loadGraphics(Paths.image('menuDesat'));
 		bg.color = FlxColor.WHITE;
 		add(bg);
@@ -90,7 +85,6 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
@@ -102,28 +96,16 @@ class FreeplayState extends MusicBeatState
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 10);
-		// scoreText.autoSize = false;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
-
-		
 
 		maxAccText = new FlxText(FlxG.width * 0.7, 20, 0, "", 10);
-		// scoreText.autoSize = false;
 		maxAccText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
 
 		comboText = new FlxText(FlxG.width * 0.7, 35, 0, "", 10);
-		// scoreText.autoSize = false;
 		comboText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
 
 		var scoreBG:Sprite = new Sprite(scoreText.x - 6, 0).makeGraphics(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
 		scoreBG.alpha = 0.6;
@@ -140,13 +122,10 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		changeDiff();
 
-		// FlxG.sound.playMusic(Paths.music('title'), 0);
-		// FlxG.sound.music.fadeIn(2, 0, 0.8);
 		selector = new FlxText();
 
 		selector.size = 40;
 		selector.text = ">";
-		// add(selector);
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 
@@ -166,6 +145,10 @@ class FreeplayState extends MusicBeatState
 
 			trace(md);
 		 */
+
+		#if android
+		addVirtualPad(FULL, A_B);
+		#end
 
 		super.create();
 	}
@@ -204,15 +187,12 @@ class FreeplayState extends MusicBeatState
 
 		bg.color = CoolUtil.smoothColorChange(bg.color, songs[curSelected].color, 0.045);
 
-
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
 
 		scoreText.text = "BEST SCORE:" + lerpScore;
-
-
 
 		lerpCombo = Math.floor(FlxMath.lerp(lerpCombo, intendedCombo, 0.4));
 
@@ -221,8 +201,6 @@ class FreeplayState extends MusicBeatState
 
 		comboText.text = "BEST COMBO:" + lerpCombo;
 
-
-
 		lerpMaxAcc = FlxMath.lerp(lerpMaxAcc, intendedMaxAcc, 0.4);
 
 		if (Math.abs(lerpMaxAcc - intendedMaxAcc) <= 10)
@@ -230,8 +208,8 @@ class FreeplayState extends MusicBeatState
 
 		maxAccText.text = "AVERAGE ACCURACY:" + lerpMaxAcc + "%";
 
-		var upP = controls.UP_PUI;
-		var downP = controls.DOWN_PUI;
+		var upP = controls.UP_P;
+		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
 
 		if (upP)
@@ -243,9 +221,9 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 		}
 
-		if (controls.LEFT_PUI)
+		if (controls.LEFT_P)
 			changeDiff(-1);
-		if (controls.RIGHT_PUI)
+		if (controls.RIGHT_P)
 			changeDiff(1);
 
 		if (controls.BACK)
@@ -256,7 +234,7 @@ class FreeplayState extends MusicBeatState
 		Assets.exists(Paths.json(songs[curSelected].songName.toLowerCase() + "/" + songs[curSelected].songName.toLowerCase() + "-funky"))
 		 && 
 		Assets.exists(Paths.instFunky(songs[curSelected].songName.toLowerCase()));
-		
+
 		if (accepted)
 		{
 			trace(curSelectedSongHaveFunkyDiff);
@@ -269,9 +247,6 @@ class FreeplayState extends MusicBeatState
 			trace(poop2);
 			trace(poop3);
 			trace(poop4);
-
-			
-			
 
 			PlayState.SONG = Song.loadFromJson(poop, poop2);
 			#if desktop
@@ -295,7 +270,7 @@ class FreeplayState extends MusicBeatState
 				};
 			}
 			#end
-			
+
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = poop4;
 			PlayState.storyWeek = poop3;
@@ -303,7 +278,6 @@ class FreeplayState extends MusicBeatState
 			
 			PlayState.deathCounter = 0;
 			CoolUtil.preloadImages(new PlayState());
-			
 		}
 	}
 
@@ -339,14 +313,8 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent('Fresh');
-		#end
-
-		// NGio.logEvent('Fresh');
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
@@ -356,19 +324,10 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		
-
-		// selector.y = (70 * curSelected) + 30;
-
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		intendedMaxAcc = Highscore.getAcc(songs[curSelected].songName, curDifficulty);
 		intendedCombo = Highscore.getCombo(songs[curSelected].songName, curDifficulty);
-		// lerpScore = 0;
-		#end
-
-		#if PRELOAD_ALL
-		//FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 		#end
 
 		var bullShit:Int = 0;
@@ -386,14 +345,13 @@ class FreeplayState extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
 		curSelectedSongHaveFunkyDiff = 
 		Assets.exists(Paths.json(songs[curSelected].songName.toLowerCase() + "/" + songs[curSelected].songName.toLowerCase() + "-funky"))
 		 && 

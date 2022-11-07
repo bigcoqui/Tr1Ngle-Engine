@@ -30,16 +30,13 @@ import openfl.utils.Assets as OpenFlAssets;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
 import flixel.animation.FlxAnimation;
-
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
-
 
 #if cpp
 import Sys;
 import sys.FileSystem;
 #end
-
 
 using StringTools;
 

@@ -16,6 +16,7 @@ import lime.utils.Assets;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.util.FlxTimer;
+import android.AndroidControlsMenu;
 
 class OptionsMenu extends MusicBeatState
 {
@@ -40,6 +41,7 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCatagory("Appearance",[]),
 		new OptionCatagory("Controls",[]),
+		new OptionCategory("Android Controls",[]),
 		new OptionCatagory("Exit",[]),
 	];
 	
@@ -72,8 +74,6 @@ class OptionsMenu extends MusicBeatState
 		camFollow.screenCenter(X);
 		add(camFollow);
 
-		
-
 		for (i in 0...options.length)
 		{
 			var controlLabel:Alphabet = new Alphabet(0, (100 * i) + 105, options[i].getName(), true, false);
@@ -85,15 +85,16 @@ class OptionsMenu extends MusicBeatState
 		FlxG.camera.follow(camFollow, null, 0.06);
 
 		changeSelection(0);
-		
+
+		#if android
+		addVirtualPad(UP_DOWN, A_B);
+		#end
 
 		super.create();
 	}
 
 	var isCat:Bool = false;
 
-	
-	
 	public static function truncateFloat( number : Float, precision : Int): Float {
 		var num = number;
 		num = num * Math.pow(10, precision);
@@ -113,7 +114,6 @@ class OptionsMenu extends MusicBeatState
 			grpControls.forEach(function(controlLabel:Alphabet)
 			{
 				controlLabel.screenCenter(X);
-			
 			});
 		}
 		else
@@ -135,8 +135,6 @@ class OptionsMenu extends MusicBeatState
 			        
 					remove(checkBoxesArray[i]);
 					checkBoxesArray[i].destroy();
-					
-				    
 				}
 				
 				checkBoxesArray = [];
@@ -150,9 +148,9 @@ class OptionsMenu extends MusicBeatState
 				curSelected = 0;
 				changeSelection(0);
 			}
-			if (controls.UP_PUI)
+			if (controls.UP_P)
 				changeSelection(-1);
-			if (controls.DOWN_PUI)
+			if (controls.DOWN_P)
 				changeSelection(1);
 			
 			if (isCat)
@@ -174,16 +172,10 @@ class OptionsMenu extends MusicBeatState
 							currentSelectedCat.getOptions()[curSelected].left();
 					}
 				}
-				
 			}
-			
-		
-
-			
 
 			if (controls.ACCEPT)
 			{
-				
 				if (isCat)
 				{
 					if (currentSelectedCat.getOptions()[curSelected].press(true))
@@ -194,12 +186,10 @@ class OptionsMenu extends MusicBeatState
 						ctrl.isMenuItem = true;
 						checkBoxesArray[curSelected].sprTracker = grpControls.members[curSelected];
 						checkBoxesArray[curSelected].set_daValue(currentSelectedCat.getOptions()[curSelected].getAccept());
-						//updateCheckboxes();
 					}
 				}
 				else
 				{
-					
                         if(options[curSelected].getName() == "Controls")
 						{
 							FlxG.switchState(new BindMenu());
@@ -207,6 +197,10 @@ class OptionsMenu extends MusicBeatState
 						else if(options[curSelected].getName() == "Appearance")
 						{
 							FlxG.switchState(new AppearanceMenu());
+						}
+						else if(options[curSelected].getName() == "Android Controls")
+						{
+						  FlxG.switchState(new AndroidControlsMenu());
 						}
 						else if(options[curSelected].getName() == "Exit")
 						{
@@ -224,19 +218,10 @@ class OptionsMenu extends MusicBeatState
 									controlLabel.targetY = i;
 									grpControls.add(controlLabel);
 									// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-									/*var checkbox:CheckboxThingie = new CheckboxThingie(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getAccept());
-									checkbox.sprTracker = controlLabel;
-
-									// using a FlxGroup is too much fuss!
-									checkBoxesArray.push(checkbox);
-									add(checkbox);*/
 								}
 							curSelected = 0;
 							updateCheckboxes();
 						}
-                    
-					
-					
 				}
 			}
 			else if(controls.LEFT_PUI && isCat)
@@ -286,10 +271,6 @@ class OptionsMenu extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent("Fresh");
-		#end
-		
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4, false);
 
 		curSelected += change;
@@ -301,10 +282,6 @@ class OptionsMenu extends MusicBeatState
 
 		camFollow.screenCenter();
 
-		
-
-		// selector.y = (70 * curSelected) + 30;
-
 		var bullShit:Int = 0;
 
 		for (item in grpControls.members)
@@ -313,16 +290,11 @@ class OptionsMenu extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
 			}
-			
 		}
-
-		
 	}
 }

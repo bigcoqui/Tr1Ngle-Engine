@@ -74,9 +74,8 @@ class CalibrateOffsetsState extends MusicBeatState
         add(b);
         curBeat = 0;
         beatHit();
-        
-
     }
+
     function calcOffset()
     {
         offset = 0;
@@ -85,6 +84,7 @@ class CalibrateOffsetsState extends MusicBeatState
         offset /= hits.length;
         offset = FlxMath.roundDecimal(offset, 1);
     }
+
     var loops:Int = 0; // not loops but yes
     var tryAgain:Bool;
     var endAA:Bool;
@@ -94,7 +94,6 @@ class CalibrateOffsetsState extends MusicBeatState
         super.update(elapsed);
         if(!started && FlxG.keys.justPressed.SPACE)
         {
-            
             started = true;
             remove(a);
             for(i in 0...4)
@@ -105,11 +104,12 @@ class CalibrateOffsetsState extends MusicBeatState
                     s.x -= 50 * (i - 1);
                     sborder.x -= 50 * (i - 1);
                 }
-                    
+
                 add(sborder);
                 dafuk.add(s);
                 s.ID = i;
             }
+
             var daText:FlxText = new FlxText(0, 0, 0, "hit here!", 16);
             daText.borderSize = 1.25;
             daText.borderQuality = 1;
@@ -131,11 +131,10 @@ class CalibrateOffsetsState extends MusicBeatState
             {
                 loops++;
 
-                
                 var offsetVal:Int = Std.int(FlxMath.roundDecimal(Conductor.songPosition + (FlxG.sound.music.length * soundLoops), 2) - ((loops) * 4000));
-                
+
                 hits.push(offsetVal);
-                
+
                 calcOffset();
 
                 var daText:FlxText = new FlxText(0, 0, 0, offsetVal + "ms", 16);
@@ -148,8 +147,7 @@ class CalibrateOffsetsState extends MusicBeatState
                 daText.velocity.y -= FlxG.random.int(140, 160);
                 daText.velocity.x = FlxG.random.float(-5, 5);
                 add(daText);
-                
-                
+
                 FlxTween.tween(daText, {alpha: 0}, 0.2, {
                     onComplete: function(tween:FlxTween)
                     {
@@ -216,7 +214,6 @@ class CalibrateOffsetsState extends MusicBeatState
             FlxG.sound.playMusic(Paths.music('freakyMenu'));
             FlxG.switchState(new OptionsMenu());
         }
-
     }
     public override function beatHit() 
     {

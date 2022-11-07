@@ -12,5 +12,4 @@ class EventsSystemSection
 	 *	Copies the first section into the second section!
 	 */
 	public static var COPYCAT:Int = 0;
-
 }

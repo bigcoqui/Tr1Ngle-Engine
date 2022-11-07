@@ -84,17 +84,12 @@ class PauseSubState extends MusicBeatSubstate
 		levelModifier4.updateHitbox();
 		add(levelModifier4);
 
-		
-
-		
-
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
 		levelDeathCounter.alpha = 0;
 		levelModifier1.alpha = 0;
 		levelModifier2.alpha = 0;
 		levelModifier4.alpha = 0;
-		
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
@@ -102,8 +97,6 @@ class PauseSubState extends MusicBeatSubstate
 		levelModifier1.x = FlxG.width - (levelModifier1.width + 20);
 		levelModifier2.x = FlxG.width - (levelModifier2.width + 20);
 		levelModifier4.x = FlxG.width - (levelModifier4.width + 20);
-	
-		
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
@@ -112,8 +105,6 @@ class PauseSubState extends MusicBeatSubstate
 		FlxTween.tween(levelModifier1, {alpha: 1, y: levelModifier1.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 		FlxTween.tween(levelModifier2, {alpha: 1, y: levelModifier2.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 		FlxTween.tween(levelModifier4, {alpha: 1, y: levelModifier4.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
-		
-		
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -129,21 +120,23 @@ class PauseSubState extends MusicBeatSubstate
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		#if android
+		addVirtualPad(UP_DOWN, A);
+		addPadCamera();
+		#end
 	}
 	function regenMenu() 
 	{
-        
         grpMenuShit.clear();
-        
-            
+
         for (a in 0 ... menuItems.length) {
          	var songText:Alphabet = new Alphabet(0, (70 * a) + 30, menuItems[a], true, false);
 			songText.isMenuItem = true;
 			songText.targetY = a;
 			grpMenuShit.add(songText);
          } 
-            
-        
+
         curSelected = 0;
         changeSelection();
     }
@@ -171,8 +164,6 @@ class PauseSubState extends MusicBeatSubstate
 			}
 		}
 
-		
-
 		if (accepted)
 		{
 			var daSelected:String = menuItems[curSelected];
@@ -181,7 +172,6 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					closePauseMenu();
-
 				case "Restart Song":
 					FlxG.resetState();
 				case "Exit to menu":
@@ -204,39 +194,35 @@ class PauseSubState extends MusicBeatSubstate
 				case "Hard":
                 	PlayState.SONG = Song.loadFromJson(PlayState.SONG.song.toLowerCase() + "-hard", PlayState.SONG.song.toLowerCase());
                     PlayState.storyDifficulty = 2;
-                    
+
 					FlxG.switchState(new PlayState());
-					
+
 				case "Back":
                 	menuItems = menuItemsOG;
                 	regenMenu();
 
                 case "Insta Fail": //done
-                	
                     PlayState.instaFail = !PlayState.instaFail;
                     PlayState.noFail = false;
-                    
+
 					FlxG.switchState(new PlayState());
 
 				case "No Fail": //done
-                	
                     PlayState.noFail = !PlayState.noFail;
                     PlayState.instaFail = false;
-                    
+
 					FlxG.switchState(new PlayState());
 
 				case "Random Notes": //done
-                	
                     PlayState.randomNotes = !PlayState.randomNotes;
-                    
+
 					FlxG.switchState(new PlayState());
-				
+
 				case "Modifiers":
 					menuItems = modifiersChoices;
 					regenMenu();
 			}
 		}
-
 	}
 
 	override function destroy()
@@ -343,7 +329,6 @@ class PauseSubState extends MusicBeatSubstate
 					swagCounter += 1;
 				}, 5);
 			}
-			
 		}
 		else
 		{
@@ -368,12 +353,10 @@ class PauseSubState extends MusicBeatSubstate
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
 	}

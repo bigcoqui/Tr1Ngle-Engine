@@ -22,7 +22,7 @@ class CoolUtil
 	public static function getTextFileContent(path:String):String // returns the content of the text file at runtime ig
 	{
 		#if cpp
-		if (FileSystem.exists(path)) return File.getContent(path);
+		if (OpenFlAssets.exists(path)) return OpenFlAssets.getText(path);
 		#end
 		return "";
 	}
@@ -56,7 +56,6 @@ class CoolUtil
 
 	public static function smoothColorChange(from:FlxColor, to:FlxColor, speed:Float = 0.045):FlxColor
 	{
-
 	    var result:FlxColor = FlxColor.fromRGBFloat
 	    (
 	        CoolUtil.coolLerp(from.redFloat, to.redFloat, speed), //red
@@ -65,11 +64,7 @@ class CoolUtil
 
 	        CoolUtil.coolLerp(from.blueFloat, to.blueFloat, speed) //blue
 	    );
-
 	    return result;
-
-	   
-
 	}
 
 	public static function preloadImages(loadState:MusicBeatState)
@@ -97,10 +92,14 @@ class CoolUtil
 		return a + CoolUtil.camLerpShit(c) * (b - a);
 	}
 }
+
 class PreloadingState extends MusicBeatState
 {
 	private var loadState:MusicBeatState;
 	private var infoText:FlxText;
+	
+	var list = Assets.list();
+
 	public function new(loadState:MusicBeatState)
 	{
 		super();
@@ -111,7 +110,7 @@ class PreloadingState extends MusicBeatState
 	public override function create()
 	{
 		super.create();
-		
+
 		var loadingSprite:Sprite = new Sprite(150, 560);
 		loadingSprite.frames = Paths.getSparrowAtlas('Loading');
 		loadingSprite.animation.addByPrefix('loading', 'LOADING', 24, true);
@@ -129,20 +128,22 @@ class PreloadingState extends MusicBeatState
 			caching();
 		});
 		#end
-		
 	}
+	
 	function caching()
 	{
 		var images = [];
 		var imagesPaths = [];
-		
+
 		#if cpp
 		if (FlxG.save.data.preloadCharacters)
 		{
 			trace("caching images...");
-			for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/images")))
+
+			var imageFile = list.filter(text -> text.contains('assets/images'));
+
+			for (i in imageFile)
 			{
-				//trace(i);
 				if (!i.endsWith(".png"))
 					continue;
 				if(i.split(".")[1] == "png")
@@ -151,9 +152,11 @@ class PreloadingState extends MusicBeatState
 					images.push(i.split(".")[0]);
 				}
 			}
-			for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images")))
+
+			var sharedFile = list.filter(text -> text.contains('assets/shared/images'));
+
+			for (i in sharedFile)
 			{
-				//trace(i);
 				if (!i.endsWith(".png"))
 					continue;
 				if(i.split(".")[1] == "png")
@@ -162,9 +165,11 @@ class PreloadingState extends MusicBeatState
 					images.push(i.split(".")[0]);
 				}
 			}
-			for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/images/icons")))
+
+			var iconFile = list.filter(text -> text.contains('assets/images/icons'));
+			
+			for (i in iconFile)
 			{
-				//trace(i);
 				if (!i.endsWith(".png"))
 					continue;
 				if(i.split(".")[1] == "png")
@@ -173,9 +178,11 @@ class PreloadingState extends MusicBeatState
 					images.push(i.split(".")[0]);
 				}
 			}
-			for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/images/characters")))
+
+			var characterFile = list.filter(text -> text.contains('assets/images/characters'));
+
+			for (i in characterFile)
 			{
-				//trace(i);
 				if (!i.endsWith(".png"))
 					continue;
 				if(i.split(".")[1] == "png")
@@ -184,11 +191,12 @@ class PreloadingState extends MusicBeatState
 					images.push(i.split(".")[0]);
 				}
 			}
-			if(FileSystem.exists("assets/week" + PlayState.storyWeek + "/images"))
+			if(OpenFlAssets.exists("assets/week" + PlayState.storyWeek + "/images"))
 			{
-				for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/week" + PlayState.storyWeek + "/images")))
+			  var weekFile = list.filter(text -> text.contains('assets/week' + PlayState.storyWeek + '/images'));
+
+				for (i in weekFile)
 				{
-					//trace(i);
 					if (!i.endsWith(".png"))
 						continue;
 					if(i.split(".")[1] == "png")
@@ -200,7 +208,7 @@ class PreloadingState extends MusicBeatState
 			}
 		}
 		#end
-		//trace(images);
+
 		if (FlxG.save.data.preloadCharacters)
 		{
 			for (i in 0 ... images.length) 
@@ -210,7 +218,6 @@ class PreloadingState extends MusicBeatState
 					OpenFlAssets.loadBitmapData(imagesPaths[i]).onComplete(function(image)
 					{
 					});
-					
 				}
 			}
 		}

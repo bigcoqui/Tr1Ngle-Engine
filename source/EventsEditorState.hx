@@ -51,7 +51,6 @@ class EventsEditorState extends MusicBeatState
 	 */
 	var curSection:Int = 0;
 
-
 	var bpmTxt:FlxText;
 
 	var strumLine:Sprite;
@@ -71,7 +70,6 @@ class EventsEditorState extends MusicBeatState
 	var _song:SwagEventSystemChart;
 
 	var typingShit:FlxInputText;
-
 
 	var tempBpm:Int = 0;
 
@@ -126,8 +124,6 @@ class EventsEditorState extends MusicBeatState
 
 		addSection();
 
-		// sections = _song.notes;
-
 		updateGrid();
 
 		loadSong(PlayState.SONG.song);
@@ -141,8 +137,6 @@ class EventsEditorState extends MusicBeatState
 		strumLine = new Sprite(0, 50).makeGraphics(GRID_SIZE * 4, 4, FlxColor.BLUE);
 		strumLine.screenCenter(X);
 		add(strumLine);
-
-		
 
 		var tabs = [
 			{name: "Song", label: 'Song'},
@@ -182,7 +176,6 @@ class EventsEditorState extends MusicBeatState
 	{
 		var UI_songTitle = new FlxUIInputText(10, 10, 70, PlayState.SONG.song, 8);
 		typingShit = UI_songTitle;
-
 
 		var check_mute_inst = new FlxUICheckBox(10, 200, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
@@ -234,7 +227,7 @@ class EventsEditorState extends MusicBeatState
 		{
 			loadJson(PlayState.SONG.song.toLowerCase());
 		});
-		
+
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', loadAutosave);
 		var startHereButton:FlxButton = new FlxButton(reloadSongJson.x, loadAutosaveBtn.y + 30, "Playtest here", function()
 		{
@@ -285,8 +278,8 @@ class EventsEditorState extends MusicBeatState
 		tab_group_song.add(openFileChart);
 		UI_box.addGroup(tab_group_song);
 		UI_box.scrollFactor.set();
-
 	}
+
 	function openFileChart()
 	{
 		var fr:FileReference = new FileReference();
@@ -294,10 +287,8 @@ class EventsEditorState extends MusicBeatState
 		var filters:Array<FileFilter> = new Array<FileFilter>();
 		filters.push(new FileFilter("JSON Files", "*.json"));
 		fr.browse(filters);
-		//var result:Array<String> = Dialogs.openFile("Select a file please!", "Please select chart file", filters);
-		//var result:Array<String> = fr.openFile("Select a file please!", "Please select chart file", filters);
-		//_onSelect(result);
 	}
+
 	function _onSelect(E:Event):Void
 	{
 		var fr:FileReference = cast(E.target, FileReference);
@@ -324,7 +315,6 @@ class EventsEditorState extends MusicBeatState
 		tab_group_section.add(stepperCopy);
 		tab_group_section.add(copyButton);
 		tab_group_section.add(clearSectionButton);
-
 
 		UI_box.addGroup(tab_group_section);
 	}
@@ -408,78 +398,70 @@ class EventsEditorState extends MusicBeatState
 		var tab_group_note = new FlxUI(null, UI_box);
 		tab_group_note.name = 'Note';
 
-		
 		arg0NS = new FlxUINumericStepper(10, 50);
 		arg0NS.name = 'arg0NS';
 		arg1NS = new FlxUINumericStepper(10, 70);
 		arg1NS.name = 'arg1NS';
 		arg2NS = new FlxUINumericStepper(10, 90);
 		arg2NS.name = 'arg2NS';
-		
+
 		arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, true));
 		arg0DD.selectedLabel = "FALSE";
-		
+
 		arg1DD = new FlxUIDropDownMenu(140, 70, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, true));
 		arg1DD.selectedLabel = "FALSE";
-		
+
 		arg2DD = new FlxUIDropDownMenu(140, 90, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, true));
 		arg2DD.selectedLabel = "FALSE";
-		
+
 		arg0Label = new FlxText(75, 50, 0, "");
 		arg1Label = new FlxText(75, 70, 0, "");
 		arg2Label = new FlxText(75, 90, 0, "");
-		
+
 		var eventsDropDown = new FlxUIDropDownMenu(10, 10, FlxUIDropDownMenu.makeStrIdLabelArray(eventTypes, true), function(event:String)
 		{
-			
 			curSelectedEvent = eventTypes[Std.parseInt(event)];
-			
+
 			curEventArgs = [0, 0, 0];
-			
+
 			updateNoteUI();
 		});
-		
+
 		arg0DD.visible = false;
 		arg1DD.visible = false;
 		arg2DD.visible = false;
-		
+
 		arg0NS.visible = false;
 		arg1NS.visible = false;
 		arg2NS.visible = false;
-		
+
 		arg0DD.alpha = 0;
 		arg1DD.alpha = 0;
 		arg2DD.alpha = 0;
-		
+
 		arg0NS.alpha = 0;
 		arg1NS.alpha = 0;
 		arg2NS.alpha = 0;
-		
 
-		
 		eventsDropDown.selectedLabel = curSelectedEvent;
-		
 
 		tab_group_note.add(arg0DD);
 		tab_group_note.add(arg1DD);
 		tab_group_note.add(arg2DD);
-		
+
 		tab_group_note.add(arg0NS);
 		tab_group_note.add(arg1NS);
 		tab_group_note.add(arg2NS);
-		
 
-		
 		tab_group_note.add(arg0Label);
 		tab_group_note.add(arg1Label);
 		tab_group_note.add(arg2Label);
-		
+
 		tab_group_note.add(eventsDropDown);
-		
+
 		UI_box.addGroup(tab_group_note);
-		
+
 		updateNoteUI();
-		
 	}
 
 	function loadSong(daSong:String):Void
@@ -487,7 +469,6 @@ class EventsEditorState extends MusicBeatState
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.stop();
-			// vocals.stop();
 		}
 		if(instAudioBuffer != null) 
 		{
@@ -514,7 +495,6 @@ class EventsEditorState extends MusicBeatState
 		add(waveformStatic);
 		waveformStatic.screenCenter(Y);
 		waveformStatic.alpha = 0.7;
-		
 
 		FlxG.sound.music.pause();
 		vocals1.pause();
@@ -542,13 +522,6 @@ class EventsEditorState extends MusicBeatState
 		// general shit
 		var title:FlxText = new FlxText(UI_box.x + 20, UI_box.y + 20, 0);
 		bullshitUI.add(title);
-		/* 
-			var loopCheck = new FlxUICheckBox(UI_box.x + 10, UI_box.y + 50, null, null, "Loops", 100, ['loop check']);
-			loopCheck.checked = curNoteSelected.doesLoop;
-			tooltips.add(loopCheck, {title: 'Section looping', body: "Whether or not it's a simon says style section", style: tooltipType});
-			bullshitUI.add(loopCheck);
-
-		 */
 	}
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>)
@@ -559,8 +532,7 @@ class EventsEditorState extends MusicBeatState
 			var label = check.getLabel().text;
 			switch (label)
 			{
-				
-				
+			  // hi
 			}
 		}
 		else if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
@@ -583,22 +555,11 @@ class EventsEditorState extends MusicBeatState
 				updateGrid();
 			}
 			FlxG.log.add(wname);
-			
 		}
-
-		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params);
 	}
 
 	var updatedSection:Bool = false;
 
-	/* this function got owned LOL
-		function lengthBpmBullshit():Float
-		{
-			if (_song.notes[curSection].changeBPM)
-				return _song.notes[curSection].lengthInSteps * (_song.notes[curSection].bpm / _song.bpm);
-			else
-				return _song.notes[curSection].lengthInSteps;
-	}*/
 	function sectionStartTime():Float
 	{
 		var daBPM:Int = Conductor.bpm;
@@ -696,7 +657,6 @@ class EventsEditorState extends MusicBeatState
 					noteInfoBG.width = noteInfoText.fieldWidth + 5;
 					noteInfoBG.height = noteInfoText.height + 5;
 				}
-				
 			});
 		}
 		else
@@ -704,8 +664,6 @@ class EventsEditorState extends MusicBeatState
 			noteInfoText.visible = false;
 			noteInfoBG.visible = false;
 		}
-			
-		
 
 		if (FlxG.mouse.x > gridBG.x
 			&& FlxG.mouse.x < gridBG.x + gridBG.width
@@ -721,7 +679,6 @@ class EventsEditorState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ENTER)
 		{
-			
 			PlayState.EVENTS = _song;
 			FlxG.sound.music.stop();
 			vocals1.stop();
@@ -782,9 +739,8 @@ class EventsEditorState extends MusicBeatState
 				vocals2.pause();
 
 				FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.4);
-				
 			}
-			
+
 			if (!FlxG.keys.pressed.SHIFT)
 			{
 				if ((FlxG.keys.pressed.UP || FlxG.keys.pressed.W || FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN))
@@ -829,11 +785,6 @@ class EventsEditorState extends MusicBeatState
 			}
 		}
 
-		/* if (FlxG.keys.justPressed.UP)
-				Conductor.changeBPM(Conductor.bpm + 1);
-			if (FlxG.keys.justPressed.DOWN)
-				Conductor.changeBPM(Conductor.bpm - 1); */
-
 		var shiftThing:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
 			shiftThing = 4;
@@ -857,9 +808,6 @@ class EventsEditorState extends MusicBeatState
 			+ Conductor.bpm;
 		super.update(elapsed);
 	}
-
-
-
 
 	function recalculateSteps():Int
 	{
@@ -905,9 +853,6 @@ class EventsEditorState extends MusicBeatState
 		updateSectionUI();
 	}
 
-
-	
-
 	function changeSection(sec:Int = 0, ?updateMusic:Bool = true, ?endOfSection:Bool = false):Void
 	{
 		trace('changing section' + sec);
@@ -926,13 +871,6 @@ class EventsEditorState extends MusicBeatState
 				FlxG.sound.music.pause();
 				vocals2.pause();
 				vocals1.pause();
-				/*var daNum:Int = 0;
-					var daLength:Float = 0;
-					while (daNum <= sec)
-					{
-						daLength += lengthBpmBullshit();
-						daNum++;
-				}*/
 
 				FlxG.sound.music.time = !endOfSection ? sectionStartTime() : sectionEndTime();
 				vocals2.time = FlxG.sound.music.time;
@@ -964,14 +902,6 @@ class EventsEditorState extends MusicBeatState
 				FlxG.sound.music.pause();
 				vocals1.pause();
 				vocals2.pause();
-
-				/*var daNum:Int = 0;
-					var daLength:Float = 0;
-					while (daNum <= sec)
-					{
-						daLength += lengthBpmBullshit();
-						daNum++;
-				}*/
 
 				FlxG.sound.music.time = time;
 				vocals1.time = FlxG.sound.music.time;
@@ -1006,9 +936,6 @@ class EventsEditorState extends MusicBeatState
 		var sec = _song.notes[curSection];
 	}
 
-	
-
-
 	function updateNoteUI():Void
 	{
 		
@@ -1018,35 +945,22 @@ class EventsEditorState extends MusicBeatState
 		arg0NS.visible = false;
 		arg1NS.visible = false;
 		arg2NS.visible = false;
-		
 
-		
 		arg0DD.alpha = 0;
 		arg1DD.alpha = 0;
 		arg2DD.alpha = 0;
 		arg0NS.alpha = 0;
 		arg1NS.alpha = 0;
 		arg2NS.alpha = 0;
-		
-
-		
 
 		arg0Label.text = "";
 		arg1Label.text = "";
 		arg2Label.text = "";
-		
 
-		
-		//UI_box.getTabGroup("Note").remove(arg0NS);
-		//UI_box.getTabGroup("Note").remove(arg1NS);
-		//UI_box.getTabGroup("Note").remove(arg2NS);
-		//UI_box.getTabGroup("Note").remove(arg0DD);
-		//UI_box.getTabGroup("Note").remove(arg1DD);
-		//UI_box.getTabGroup("Note").remove(arg2DD);
 		switch(curSelectedEvent)
 		{
 			case "changeDadCharacter" | "changeBFCharacter": // changing characters
-				
+
 				trace("a");
 				arg0Label.text = "Char";
 				arg1Label.text = "X Spawn Offset";
@@ -1058,7 +972,7 @@ class EventsEditorState extends MusicBeatState
 				});
 				arg0DD.selectedLabel = curEventArgs[0];
 				curEventArgs[0] = characters[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1069,7 +983,7 @@ class EventsEditorState extends MusicBeatState
 				arg1NS.visible = true;
 				arg1NS.alpha = 1;
 				curEventArgs[1] = arg1NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg1NS);
 				UI_box.getTabGroup("Note").remove(arg2NS);
 				arg2NS = new FlxUINumericStepper(10, 90, 1, 0, -2000, 2000, 0);
@@ -1078,7 +992,7 @@ class EventsEditorState extends MusicBeatState
 				arg2NS.visible = true;
 				arg2NS.alpha = 1;
 				curEventArgs[2] = arg2NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg2NS);
 			case "chromaticAberrations": // chromatic aberrations
 				trace("a");
@@ -1086,7 +1000,6 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				arg0DD.selectedLabel = curEventArgs[0];
 				curEventArgs[0] = boolA[0];
@@ -1100,11 +1013,10 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				curEventArgs[0] = boolA[0];
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1115,7 +1027,7 @@ class EventsEditorState extends MusicBeatState
 				arg1NS.visible = true;
 				arg1NS.alpha = 1;
 				curEventArgs[1] = arg1NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg1NS);
 			case "changeCameraBeat": // cam beat
 				trace("a");
@@ -1128,7 +1040,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 				UI_box.getTabGroup("Note").remove(arg1NS);
 				arg1NS = new FlxUINumericStepper(10, 70, 1, 4, 1, 16, 0);
@@ -1137,7 +1049,7 @@ class EventsEditorState extends MusicBeatState
 				arg1NS.visible = true;
 				arg1NS.alpha = 1;
 				curEventArgs[1] = arg1NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg1NS);
 			case "changeZoom": // change zoom
 				arg0Label.text = "New Zoom Value";
@@ -1148,7 +1060,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "changeRotationHUD":
 				UI_box.getTabGroup("Note").remove(arg0NS);
@@ -1158,7 +1070,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "changeRotationGame":
 				UI_box.getTabGroup("Note").remove(arg0NS);
@@ -1168,7 +1080,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "changeRotation":
 				UI_box.getTabGroup("Note").remove(arg0NS);
@@ -1178,7 +1090,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "playBFAnim": // playing anims for bf
 				arg0Label.text = "Anim";
@@ -1187,11 +1099,10 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(Character.getCharacterAnimsList(PlayState.SONG.player1), false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				curEventArgs[0] = "spinMic";
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1201,11 +1112,10 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(Character.getCharacterAnimsList(PlayState.SONG.player2), false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				curEventArgs[0] = "spinMic";
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1215,11 +1125,10 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(Character.getCharacterAnimsList("gf"), false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				curEventArgs[0] = "cheer";
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1233,7 +1142,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 
 				UI_box.getTabGroup("Note").remove(arg1NS);
@@ -1259,11 +1168,10 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				curEventArgs[0] = boolA[0];
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1286,7 +1194,7 @@ class EventsEditorState extends MusicBeatState
 				});
 				curEventArgs[0] = boolA[0];
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1314,11 +1222,10 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				curEventArgs[0] = boolA[0];
 				arg0DD.selectedLabel = curEventArgs[0];
-				
+
 				arg0DD.visible = true;
 				arg0DD.alpha = 1;
 				UI_box.getTabGroup("Note").add(arg0DD);
@@ -1327,7 +1234,6 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				arg0DD.selectedLabel = curEventArgs[0];
 				curEventArgs[0] = boolA[0];
@@ -1340,7 +1246,6 @@ class EventsEditorState extends MusicBeatState
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(boolA, false), function(value:String)
 				{
 					curEventArgs[0] = value;
-					
 				});
 				arg0DD.selectedLabel = curEventArgs[0];
 				curEventArgs[0] = boolA[0];
@@ -1354,7 +1259,7 @@ class EventsEditorState extends MusicBeatState
 				arg1NS.visible = true;
 				arg1NS.alpha = 1;
 					curEventArgs[1] = arg1NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg1NS);
 			case "zoomCam": // zoom
 				arg0Label.text = "Zoom Value";
@@ -1365,7 +1270,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "rotateCam": // rotate
 				arg0Label.text = "Rotation Angle";
@@ -1376,7 +1281,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "rotateCamGame": // rotate
 				arg0Label.text = "Rotation Angle";
@@ -1387,7 +1292,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "rotateCamHUD": // rotate
 				arg0Label.text = "Rotation Angle";
@@ -1398,7 +1303,7 @@ class EventsEditorState extends MusicBeatState
 				arg0NS.visible = true;
 				arg0NS.alpha = 1;
 				curEventArgs[0] = arg0NS.value;
-				
+
 				UI_box.getTabGroup("Note").add(arg0NS);
 			case "wavyStrumLine": // wavy strum line
 				UI_box.getTabGroup("Note").remove(arg0DD);
@@ -1425,7 +1330,7 @@ class EventsEditorState extends MusicBeatState
 			case "callFunction": // callFunction
 				UI_box.getTabGroup("Note").remove(arg0DD);
 				arg2Label.text = "this event basically calls\npublic static function from PlayState.hx\n\nyou need to put every function name\nin the functionsList array in PlayState.hx";
-				
+
 				arg0DD = new FlxUIDropDownMenu(140, 50, FlxUIDropDownMenu.makeStrIdLabelArray(PlayState.functionsList, false), function(value:String)
 				{
 					curEventArgs[0] = value;
@@ -1436,13 +1341,8 @@ class EventsEditorState extends MusicBeatState
 
 				UI_box.getTabGroup("Note").add(arg0DD);
 		}
-		//UI_box.getTabGroup("Note").add(arg0NS);
-		//UI_box.getTabGroup("Note").add(arg1NS);
-		//UI_box.getTabGroup("Note").add(arg2NS);
-		//UI_box.getTabGroup("Note").add(arg0DD);
-		//UI_box.getTabGroup("Note").add(arg1DD);
-		//UI_box.getTabGroup("Note").add(arg2DD);
 	}
+
 	function updateScrollBar():Void
 	{
 		scrollBar.makeGraphics(20, 600, FlxColor.WHITE);
@@ -1457,7 +1357,6 @@ class EventsEditorState extends MusicBeatState
 				scrollBar.pixels.fillRect(new Rectangle(daNoteInfo * 5, daStrumTime / (FlxG.sound.music.length) * 600, 5, 5), FlxColor.GREEN);
 			}
 		}
-		
 	}
 	var instAudioBuffer:AudioBuffer;
 	
@@ -1469,29 +1368,12 @@ class EventsEditorState extends MusicBeatState
 			curRenderedNotes.remove(curRenderedNotes.members[0], true);
 		}
 
-
-
 		var sectionInfo:Array<Dynamic> = _song.notes[curSection].sectionNotes;
 
 
 			var daBPM:Int = PlayState.SONG.bpm;
 
 			Conductor.changeBPM(daBPM);
-
-
-		/* // PORT BULLSHIT, INCASE THERE'S NO SUSTAIN DATA FOR A NOTE
-			for (sec in 0..._song.notes.length)
-			{
-				for (notesse in 0..._song.notes[sec].sectionNotes.length)
-				{
-					if (_song.notes[sec].sectionNotes[notesse][2] == null)
-					{
-						trace('SUS NULL');
-						_song.notes[sec].sectionNotes[notesse][2] = 0;
-					}
-				}
-			}
-		 */
 
 		for (i in sectionInfo)
 		{
@@ -1510,7 +1392,6 @@ class EventsEditorState extends MusicBeatState
 			note.eventArgs = daNoteEventArgsA;
 			note.eventType = daNoteEventTypeA;
 			curRenderedNotes.add(note);
-
 		}
 	}
 
@@ -1565,7 +1446,6 @@ class EventsEditorState extends MusicBeatState
 		trace(curSection);
 
 		updateGrid();
-		//updateNoteUI();
 		autosaveSong();
 	}
 
@@ -1579,31 +1459,7 @@ class EventsEditorState extends MusicBeatState
 		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height);
 	}
 
-	/*
-		function calculateSectionLengths(?sec:SwagSection):Int
-		{
-			var daLength:Int = 0;
-
-			for (i in _song.notes)
-			{
-				var swagLength = i.lengthInSteps;
-
-				if (i.typeOfSection == Section.COPYCAT)
-					swagLength * 2;
-
-				daLength += swagLength;
-
-				if (sec != null && sec == i)
-				{
-					trace('swag loop??');
-					break;
-				}
-			}
-
-			return daLength;
-	}*/
 	private var daSpacing:Float = 0.3;
- 
 
 	function getNotes():Array<Dynamic>
 	{

@@ -80,13 +80,14 @@ class StoryMenuState extends MusicBeatState
 	override function create()
 	{
 		#if windows
-		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
 		#end
+
 		if (!FlxG.sound.music.playing || FlxG.sound.music.volume == 0)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
+
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
@@ -95,7 +96,6 @@ class StoryMenuState extends MusicBeatState
 			if (!FlxG.sound.music.playing){
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
-				
 		}
 
 		persistentUpdate = persistentDraw = true;
@@ -112,21 +112,6 @@ class StoryMenuState extends MusicBeatState
 		rankText.setFormat(Paths.font("vcr.ttf"), 32);
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
-
-
-		/*var a:ParticleSystem = new ParticleSystem(0, 0);
-        a.type = ParticleSystem.SpawnType.TriangleRegion;
-        a.region.x = 60;
-		a.emission = 0.25;
-        a.maxParticles = 5000;
-        a.lifetime = 1;
-        a.speed = 5;
-        a.endSize = new FlxPoint();
-        a.startColor = FlxColor.CYAN;
-        a.endColor = FlxColor.BLUE;
-        a.screenCenter();
-		
-*/
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
@@ -153,7 +138,6 @@ class StoryMenuState extends MusicBeatState
 
 			weekThing.screenCenter(X);
 			weekThing.antialiasing = true;
-			// weekThing.updateHitbox();
 
 			// Needs an offset thingie
 			if (!weekUnlocked[i])
@@ -213,28 +197,28 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist.font = rankText.font;
 		txtTracklist.color = 0xFFe55777;
 		add(txtTracklist);
-		// add(rankText);
 		add(scoreText);
 		add(txtWeekTitle);
 
 		updateText();
-		//add(a);
+
 		trace("Line 165");
+
+		#if android
+		addVirtualPad(FULL, A_B);
+		#end
 
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		// scoreText.setFormat('VCR OSD Mono', 32);
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.5));
 
 		scoreText.text = "WEEK SCORE:" + lerpScore;
 
 		txtWeekTitle.text = weekNames[curWeek].toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
-
-		// FlxG.watch.addQuick('font', scoreText.font);
 
 		difficultySelectors.visible = weekUnlocked[curWeek];
 
@@ -247,12 +231,12 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
-				if (controls.UP_PUI)
+				if (controls.UP_P)
 				{
 					changeWeek(-1);
 				}
 
-				if (controls.DOWN_PUI)
+				if (controls.DOWN_P)
 				{
 					changeWeek(1);
 				}
@@ -267,9 +251,9 @@ class StoryMenuState extends MusicBeatState
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_PUI)
+				if (controls.RIGHT_P)
 					changeDifficulty(1);
-				if (controls.LEFT_PUI)
+				if (controls.LEFT_P)
 					changeDifficulty(-1);
 			}
 
@@ -323,6 +307,7 @@ class StoryMenuState extends MusicBeatState
 			PlayState.storyDifficulty = curDifficulty;
 
 			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+
 			#if desktop
 			if(FileSystem.exists(Paths.json(PlayState.storyPlaylist[0].toLowerCase() + "/" + PlayState.storyPlaylist[0].toLowerCase() + "-events")))
 				PlayState.EVENTS = EventSystemChart.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + "-events", PlayState.storyPlaylist[0].toLowerCase());

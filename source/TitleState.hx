@@ -45,16 +45,12 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		// DEBUG BULLSHIT
-
 		super.create();
-
 
 		FlxG.sound.volume = 0.3;
 
@@ -80,7 +76,6 @@ class TitleState extends MusicBeatState
 
 		#if desktop
 		DiscordClient.initialize();
-		
 		Application.current.onExit.add (function (exitCode) {
 			DiscordClient.shutdown();
 		 });
@@ -90,7 +85,6 @@ class TitleState extends MusicBeatState
 			FlxG.updateFramerate = FlxG.save.data.framerateDraw;
 			FlxG.drawFramerate = FlxG.save.data.framerateDraw;
 		}
-			
 	}
 
 	var logoBl:Sprite;
@@ -119,10 +113,6 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 		}
@@ -131,28 +121,23 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		var bg:Sprite = new Sprite().makeGraphics(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = true;
-		// bg.setGraphicSize(Std.int(bg.width * 0.6));
-		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new Sprite(-100, 1150); // -100 -50
+		logoBl = new Sprite(-100, 1150);
 		logoBl.frames = Paths.getSparrowAtlas('FNF_Logo');
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'FNF Logo', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
 
-		logoTE = new Sprite(2000, 450);// 620 450
+		logoTE = new Sprite(2000, 450);
 		logoTE.frames = Paths.getSparrowAtlas('Logo_TE');
 		logoTE.antialiasing = true;
 		logoTE.animation.addByPrefix('bump', 'Logo TE', 24);
 		logoTE.animation.play('bump');
 		logoTE.updateHitbox();
 
-		gfDance = new Sprite(700, 1150); // 600 0
+		gfDance = new Sprite(700, 1150);
 		gfDance.frames = Paths.getSparrowAtlas('gf_starting_screen');
 		gfDance.animation.addByIndices('danceLeft', 'gf starting screen', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gf starting screen', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
@@ -160,16 +145,14 @@ class TitleState extends MusicBeatState
 		add(logoBl);
 		add(gfDance);
 		add(logoTE);
-		
 
-		titleText = new Sprite(100, 1150); // 100 FlxG.height * 0.8
+		titleText = new Sprite(100, 1150);
 		titleText.frames = Paths.getSparrowAtlas('press_enter_to_begin');
 		titleText.animation.addByPrefix('idle', "Press enter to begin 20", 24, true);
 		titleText.animation.addByPrefix('press', "Press enter to begin 2 pressed0", 24, true);
 		titleText.antialiasing = true;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
-		// titleText.screenCenter(X);
 		add(titleText);
 
 		logoBl.setGraphicSize(Std.int(logoBl.width * 1.05));
@@ -178,7 +161,6 @@ class TitleState extends MusicBeatState
 		logoBl.updateHitbox();
 		logoTE.updateHitbox();
 		gfDance.updateHitbox();
-		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
 		credGroup = new FlxGroup();
 		add(credGroup);
@@ -189,8 +171,6 @@ class TitleState extends MusicBeatState
 
 		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
 		credTextShit.screenCenter();
-
-		// credTextShit.alignment = CENTER;
 
 		credTextShit.visible = false;
 
@@ -210,8 +190,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
-
-		// credGroup.add(credTextShit);
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -239,24 +217,13 @@ class TitleState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
-
-		if (FlxG.keys.justPressed.F)
-		{
-			FlxG.fullscreen = !FlxG.fullscreen;
-			FlxG.save.data.fullscreen = FlxG.fullscreen;
-		}
 
 		var pressedEnter:Bool = controls.ACCEPT;
 
-		#if mobile
+		#if android
 		for (touch in FlxG.touches.list)
-		{
 			if (touch.justPressed)
-			{
 				pressedEnter = true;
-			}
-		}
 		#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
@@ -280,7 +247,6 @@ class TitleState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 			transitioning = true;
-			// FlxG.sound.music.stop();
 			FlxTween.cancelTweensOf(logoBl);
 			FlxTween.cancelTweensOf(logoTE);
 			FlxTween.cancelTweensOf(gfDance);
@@ -293,7 +259,6 @@ class TitleState extends MusicBeatState
 			{
 					FlxG.switchState(new MainMenuState());
 			});
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
 		if (pressedEnter && !skippedIntro)
@@ -353,49 +318,30 @@ class TitleState extends MusicBeatState
 		{
 			case 1:
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-			// credTextShit.visible = true;
 			case 3:
 				addMoreText('present');
-			// credTextShit.text += '\npresent...';
-			// credTextShit.addText();
 			case 4:
 				deleteCoolText();
-			// credTextShit.visible = false;
-			// credTextShit.text = 'In association \nwith';
-			// credTextShit.screenCenter();
 			case 5:
 				createCoolText(['In association', 'with']);
 			case 7:
 				addMoreText('newgrounds');
 				ngSpr.visible = true;
-			// credTextShit.text += '\nNewgrounds';
 			case 8:
 				deleteCoolText();
 				ngSpr.visible = false;
-			// credTextShit.visible = false;
-
-			// credTextShit.text = 'Shoutouts Tom Fulp';
-			// credTextShit.screenCenter();
 			case 9:
 				createCoolText([curWacky[0]]);
-			// credTextShit.visible = true;
 			case 11:
 				addMoreText(curWacky[1]);
-			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();
-			// credTextShit.visible = false;
-			// credTextShit.text = "Friday";
-			// credTextShit.screenCenter();
 			case 13:
 				addMoreText('Friday');
-			// credTextShit.visible = true;
 			case 14:
 				addMoreText('Night');
-			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
-
+				addMoreText('Funkin');
 			case 16:
 				skipIntro();
 		}
@@ -424,7 +370,6 @@ class TitleState extends MusicBeatState
 						
 					}});
 				}});
-				
 		}
 	}
 }

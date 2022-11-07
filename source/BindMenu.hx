@@ -20,7 +20,6 @@ import flixel.text.FlxText;
 import flixel.input.FlxKeyManager;
 import flixel.util.FlxTimer;
 
-
 using StringTools;
 
 class BindMenu extends MusicBeatState
@@ -68,16 +67,13 @@ class BindMenu extends MusicBeatState
     var rebindText2:Alphabet;
 
 	override function create()
-	{	
-
+	{
         for (i in 0...keys.length)
         {
             var k = keys[i];
             if (k == null)
                 keys[i] = defaultKeys[i];
         }
-	
-		
 
 		persistentUpdate = persistentDraw = true;
 
@@ -95,14 +91,6 @@ class BindMenu extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
         add(camFollow);
         camFollow.screenCenter(X);
-
-        /*keyTextDisplay = new FlxText(-10, 0, 1280, "", 72);
-		keyTextDisplay.scrollFactor.set(0, 0);
-		keyTextDisplay.setFormat(Paths.font("vcr.ttf"), 54, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		keyTextDisplay.borderSize = 2;
-		keyTextDisplay.borderQuality = 1;
-		
-        add(keyTextDisplay);*/
 
         grpControls = new FlxTypedGroup<Alphabet>();
         add(grpControls);
@@ -130,8 +118,6 @@ class BindMenu extends MusicBeatState
             grpControls2.add(ctrl2);
         }
 
-
-
         blackBG = new Sprite(0, 0).makeGraphics(FlxG.width * 4, FlxG.height * 4, 0xFF000000);
         blackBG.alpha = 0.5;
         blackBG.screenCenter();
@@ -143,7 +129,6 @@ class BindMenu extends MusicBeatState
         rebindBG.scrollFactor.set(0, 0);
         add(rebindBG);
         rebindBG.visible = false;
-        //"\nPress any key to rebind\n\n\n\n    Escape to cancel"
         rebindText = new Alphabet(0, 185, "Press any key to rebind", true, false);
         rebindText.screenCenter(X);
         rebindText.scrollFactor.set(0, 0);
@@ -156,9 +141,6 @@ class BindMenu extends MusicBeatState
         add(rebindText2);
         rebindText2.visible = false;
 
-        
-
-
         keyWarning = new FlxText(0, 580, 1280, "WARNING:TRY ANOTHER KEY", 42);
 		keyWarning.scrollFactor.set(0, 0);
 		keyWarning.setFormat(Paths.font("vcr.ttf"), 54, FlxColor.RED + FlxColor.YELLOW, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -167,9 +149,6 @@ class BindMenu extends MusicBeatState
         keyWarning.screenCenter(X);
         keyWarning.alpha = 0;
         add(keyWarning);
-        
-
-		
 
         warningTween = FlxTween.tween(keyWarning, {alpha: 0}, 0);
         warningColorTween = FlxTween.tween(menuBG, {color: 0xFFea71fd}, 0);
@@ -177,14 +156,18 @@ class BindMenu extends MusicBeatState
         textUpdate();
         changeItem(0);
 
-        FlxG.camera.follow(camFollow, null, 0.06);
+    FlxG.camera.follow(camFollow, null, 0.06);
+
+    #if android
+    addVirtualPad(FULL, A_B);
+    #end
+
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
         FlxG.camera.followLerp = CoolUtil.camLerpShit(0.06);
-        
 
         switch(state){
 
@@ -193,24 +176,20 @@ class BindMenu extends MusicBeatState
                 rebindBG.visible = false;
                 rebindText.visible = false;
                 rebindText2.visible = false;
-                if (controls.UP_PUI)
+                if (controls.UP_P)
 				{
 					
 					changeItem(-1);
 				}
 
-				if (controls.DOWN_PUI)
+				if (controls.DOWN_P)
 				{
-					
 					changeItem(1);
 				}
 
                 if (controls.ACCEPT){
                     FlxG.sound.play(Paths.sound("scrollMenu"), 1, false);
-                   
                     state = "input";
-                    
-                    
                 }
                 else if(controls.BACK){
                     FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -242,18 +221,15 @@ class BindMenu extends MusicBeatState
                     state = "select";
                 }
 
-
             case "exiting":
-
 
             default:
                 state = "select";
-
         }
 
         if(FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.UP && !FlxG.keys.justPressed.DOWN && !FlxG.keys.justPressed.LEFT && !FlxG.keys.justPressed.RIGHT){
 			textUpdate();
-             
+
         }
 
 		super.update(elapsed);
@@ -261,13 +237,8 @@ class BindMenu extends MusicBeatState
 	}
 
     public function textUpdate(){
-
-        
-
         for(i in 0...keyText.length)
         {
-
-            //keyTextDisplay.text += textStart + keyText[i];
             grpControls.remove(grpControls.members[i]);
             var ctrl:Alphabet = new Alphabet(0, (70 * i) + 140 + (i >= 4 ? 90 : 0), keyText[i], true, false);
             ctrl.ID = i;
@@ -282,17 +253,10 @@ class BindMenu extends MusicBeatState
             grpControls2.add(ctrl2);
 
             changeItem(0);
-            
         }
-
-        //keyTextDisplay.screenCenter();
-
-        
-
     }
 
     public function save(){
-
         FlxG.save.data.upBind = keys[2];
         FlxG.save.data.downBind = keys[1];
         FlxG.save.data.leftBind = keys[0];
@@ -309,30 +273,24 @@ class BindMenu extends MusicBeatState
         FlxG.save.flush();
 
         PlayerSettings.player1.controls.loadKeyBinds();
-
     }
 
     public function reset(){
-
         for(i in 0...keys.length){
             keys[i] = defaultKeys[i];
         }
         quit();
-
     }
 
     public function quit(){
-
         state = "exiting";
 
         save();
 
         FlxG.switchState(new OptionsMenu());
-
     }
 
 	function addKey(r:String){
-
         var shouldReturn:Bool = true;
 
         var notAllowed:Array<String> = [];
@@ -348,8 +306,8 @@ class BindMenu extends MusicBeatState
             for(x in keyText){
                 if(x != keyText[curSelected]){notAllowed.push(x);}
             }
-            
         }
+
         else {for(x in keyText){notAllowed.push(x);}}
 
         trace(notAllowed);
@@ -360,7 +318,6 @@ class BindMenu extends MusicBeatState
                 if(oK == r && ((curSelected >= 4 &&  x >= 4) || (curSelected < 4 && x < 4)))
                     keys[x] = null;
             }
-        
 
         if(shouldReturn){
             keys[curSelected] = r;
@@ -369,9 +326,7 @@ class BindMenu extends MusicBeatState
         else{
             keys[curSelected] = tempKey;
             FlxG.sound.play(Paths.sound("cancelMenu"), 1, false);
-            
         }
-        
         changeItem(0);
 	} 
 
@@ -388,10 +343,7 @@ class BindMenu extends MusicBeatState
 
         var bullShit:Int = 0;
 
-        
         camFollow.y = grpControls.members[curSelected].getGraphicMidpoint().y + 70;
-        
-        
 
         for (item in grpControls.members)
         {

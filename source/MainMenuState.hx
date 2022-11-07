@@ -36,8 +36,8 @@ class MainMenuState extends MusicBeatState
 	override function create()
 	{
 		Bind.keyCheck();
+
 		#if desktop
-		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
@@ -73,7 +73,6 @@ class MainMenuState extends MusicBeatState
 		magenta.antialiasing = true;
 		magenta.color = 0xFFfd719b;
 		add(magenta);
-		// magenta.scrollFactor.set();
 
 		menuItems = new FlxTypedGroup<Sprite>();
 		add(menuItems);
@@ -93,21 +92,9 @@ class MainMenuState extends MusicBeatState
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = true;
 			menuItem.alpha = 0;
-			/*variants of tween (don't forget to change the coordinates of the menuItem)
 
-			FlxTween.tween(menuItem, {alpha: 1, y: menuItem.y - 500}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.2 + i / 4});	coords of the menuItem = 0, 560 + (i * 160)
-			FlxTween.tween(menuItem, {alpha: 1, y: menuItem.y + 500}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.2 + i / 4});	coords of the menuItem = 0, -440 + (i * 160)
-			
-
-
-			FlxTween.tween(menuItem, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.2 + i / 4});		coords of the menuItem = 0, 60 + (i * 160)
-
-			*/
 			FlxTween.tween(menuItem, {alpha: 1, y: menuItem.y + 500}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.2 + i / 4});
-			
 		}
-
-		
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 36, 0, "Game version:" + Application.current.meta.get('version') , 12);
 		versionShit.scrollFactor.set();
@@ -120,11 +107,12 @@ class MainMenuState extends MusicBeatState
 		add(engineVersionShit);
 		
 		FlxG.camera.follow(camFollow, null, 0.06);
-		
-
-		// NG.core.calls.event.logEvent('swag').send();
 
 		changeItem();
+
+		#if android
+		addVirtualPad(UP_DOWN, A_B);
+		#end
 
 		super.create();
 	}
@@ -143,13 +131,13 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			if (controls.UP_PUI)
+			if (controls.UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'), 1, false);
 				changeItem(-1);
 			}
 
-			if (controls.DOWN_PUI)
+			if (controls.DOWN_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'), 1, false);
 				changeItem(1);
@@ -224,7 +212,6 @@ class MainMenuState extends MusicBeatState
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 		});
-		
 	}
 
 	function changeItem(huh:Int = 0)
@@ -248,6 +235,5 @@ class MainMenuState extends MusicBeatState
 
 			spr.updateHitbox();
 		});
-		
 	}
 }

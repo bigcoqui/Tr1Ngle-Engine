@@ -28,7 +28,6 @@ import openfl.utils.AssetType;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
 import flixel.animation.FlxAnimation;
-
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
 
@@ -37,13 +36,10 @@ import Sys;
 import sys.FileSystem;
 #end
 
-
 using StringTools;
 
 class NoteSplash extends Sprite
 {
-	
-
     public function new(X:Float, Y:Float, noteData:Int)
     {
     	super(X, Y);
@@ -74,8 +70,7 @@ class NoteSplash extends Sprite
 		this.y = y;
     	alpha = 0.65;
     	animation.play("note" + note + "-" + FlxG.random.int(0, 1), true);
-    	
-		
+
     	animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
     	updateHitbox();
 		if(PlayState.storyWeek != 6)

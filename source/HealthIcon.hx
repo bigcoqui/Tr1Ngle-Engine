@@ -52,7 +52,7 @@ class HealthIcon extends Sprite
 		if(char != this.character)
 		{
 			#if desktop
-			if(FileSystem.exists(Paths.image("icons/icon-" + char)))
+			if(OpenFlAssets.exists(Paths.image("icons/icon-" + char)))
 			{
 				if(loadGraphics((Paths.image("icons/icon-" + char))).width >= 450)
 				{

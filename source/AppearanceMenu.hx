@@ -97,10 +97,15 @@ class AppearanceMenu extends MusicBeatState
 		grpControls.add(optionUI6);
         optionUI6.screenCenter(X);
         optionUI6.ID = 5;
-        
-        textUpdate();
+
+    textUpdate();
 		changeItem(0);
+		
+		#if android
+		addVirtualPad(FULL, A_B);
+		#end
     }
+
     public function textUpdate()
     {
         grpControls.remove(grpControls.members[curSelected]);
@@ -166,11 +171,11 @@ class AppearanceMenu extends MusicBeatState
         leftArrow.screenCenter(Y);
         leftArrow.y -= 40;
         rightArrow.y -= 40;
-        if(controls.UP_PUI)
+        if(controls.UP_P)
         {
             changeItem(-1);
         }
-        if(controls.DOWN_PUI)
+        if(controls.DOWN_P)
         {
             changeItem(1);
         }
@@ -191,11 +196,11 @@ class AppearanceMenu extends MusicBeatState
 			rightArrow.animation.play("idle");
 		}
 
-        if(controls.RIGHT_PUI)
+        if(controls.RIGHT_P)
         {
             changeCurOptionValue(1);
         }
-        if(controls.LEFT_PUI)
+        if(controls.LEFT_P)
         {
             changeCurOptionValue(-1);
         }
@@ -206,7 +211,6 @@ class AppearanceMenu extends MusicBeatState
             FlxG.save.flush();
             FlxG.switchState(new OptionsMenu());
         }
-            
     }
     public function changeCurOptionValue(amount:Int = 0)
     {
@@ -244,10 +248,7 @@ class AppearanceMenu extends MusicBeatState
 
         var bullShit:Int = 0;
 
-        
         camFollow.y = grpControls.members[curSelected].getGraphicMidpoint().y + 70;
-        
-        
 
         for (item in grpControls.members)
         {

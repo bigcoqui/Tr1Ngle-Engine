@@ -8,36 +8,6 @@ import flixel.util.FlxColor;
 
 using StringTools;
 
-/*enum abstract EventsNoteType(String) to String from String
-{
-	var ChangeDadCharacter = "changeDadCharacter";
-	var ChangeBFCharacter = "changeBFCharacter";
-
-	var ChromaticAberrations = "chromaticAberrations";
-	var Vignette = "vignette";
-	
-	var ChangeCameraBeat = "changeCameraBeat";
-	var ChangeZoom = "changeZoom";
-	var PlayBFAnim = "playBFAnim";
-	var PlayDadAnim = "playDadAnim";
-	var PlayGFAnim = "playGFAnim";
-	var ShakeCamera = "shakeCamera";
-	var PointAtGF = "pointAtGF";
-
-	var GrayScale = "grayScale";
-	var InvertColor = "invertColor";
-	var Pixelate = "pixelate";
-
-	var ZoomCam = "zoomCam";
-	var RotateCam = "rotateCam";
-
-	var WavyStrumLine = "wavyStrumLine";
-
-	var Countdown = "countdown";
-
-	var CallFunction = "callFunction";
-}*/
-
 class Note extends Sprite
 {
 	public var strumTime:Float = 0;
@@ -115,7 +85,6 @@ class Note extends Sprite
 			default:
 				if(noteSkin == "")
 				{
-					
 					frames = Paths.getSparrowAtlas("NOTE_assets");
 					animation.addByPrefix('greenScroll', 'green0');
 					animation.addByPrefix('redScroll', 'red0');
@@ -170,7 +139,6 @@ class Note extends Sprite
 				animation.play('redScroll');
 		}
 
-		
 		if (FlxG.save.data.downscroll && sustainNote) 
 			flipY = true;
 
@@ -222,103 +190,13 @@ class Note extends Sprite
 		if(eventNote)
 			loadGraphics(Paths.image("Event_Note"));
 	}
-	/*public function changeSkin(noteSkin:String)
-	{
-		var daStage:String = PlayState.curStage;
 
-		switch (daStage)
-		{
-			case 'school' | 'schoolEvil':
-				loadGraphics(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
-
-				animation.add('greenScroll', [6]);
-				animation.add('redScroll', [7]);
-				animation.add('blueScroll', [5]);
-				animation.add('purpleScroll', [4]);
-
-				if (isSustainNote)
-				{
-					loadGraphics(Paths.image('weeb/pixelUI/arrowEnds'), true, 7, 6);
-
-					animation.add('purpleholdend', [4]);
-					animation.add('greenholdend', [6]);
-					animation.add('redholdend', [7]);
-					animation.add('blueholdend', [5]);
-
-					animation.add('purplehold', [0]);
-					animation.add('greenhold', [2]);
-					animation.add('redhold', [3]);
-					animation.add('bluehold', [1]);
-				}
-
-				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
-				updateHitbox();
-
-			default:
-				if(noteSkin == "")
-				{
-					
-					frames = Paths.getSparrowAtlas("NOTE_assets");
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
-					animation.addByPrefix('purpleholdend', 'pruple end hold');
-					animation.addByPrefix('greenholdend', 'green hold end');
-					animation.addByPrefix('redholdend', 'red hold end');
-					animation.addByPrefix('blueholdend', 'blue hold end');
-					animation.addByPrefix('purplehold', 'purple hold piece');
-					animation.addByPrefix('greenhold', 'green hold piece');
-					animation.addByPrefix('redhold', 'red hold piece');
-					animation.addByPrefix('bluehold', 'blue hold piece');
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = true;
-				}
-				else
-				{
-					frames = Paths.getSparrowAtlas(noteSkin);
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
-					animation.addByPrefix('purpleholdend', 'pruple end hold');
-					animation.addByPrefix('greenholdend', 'green hold end');
-					animation.addByPrefix('redholdend', 'red hold end');
-					animation.addByPrefix('blueholdend', 'blue hold end');
-					animation.addByPrefix('purplehold', 'purple hold piece');
-					animation.addByPrefix('greenhold', 'green hold piece');
-					animation.addByPrefix('redhold', 'red hold piece');
-					animation.addByPrefix('bluehold', 'blue hold piece');
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = true;
-				}
-		}
-
-		switch (noteData)
-		{
-			case 0:
-				x += swagWidth * 0;
-				animation.play('purpleScroll');
-			case 1:
-				x += swagWidth * 1;
-				animation.play('blueScroll');
-			case 2:
-				x += swagWidth * 2;
-				animation.play('greenScroll');
-			case 3:
-				x += swagWidth * 3;
-				animation.play('redScroll');
-		}
-	}*/
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		if (mustPress)
 		{
-			
 			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
 				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 				canBeHit = true;
@@ -327,7 +205,6 @@ class Note extends Sprite
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
 				tooLate = true;
-
 		}
 		else
 		{
@@ -342,7 +219,5 @@ class Note extends Sprite
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}
-
-		
 	}
 }
