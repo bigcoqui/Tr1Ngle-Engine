@@ -19,8 +19,8 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 	var difficultyChoices:Array<String> = ["Easy", "Normal", "Hard", "Back"];
 	var modifiersChoices:Array<String> = ["Insta Fail", "No Fail", "Random Notes", "Back"];
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Modifiers', 'Exit to menu'];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Modifiers', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Modifiers', 'Chart Editor', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Modifiers', 'Chart Editor', 'Exit to menu'];
 	var curSelected:Int = 0;
 
 	var canCountdown:Bool = true;
@@ -128,10 +128,10 @@ class PauseSubState extends MusicBeatSubstate
 	}
 	function regenMenu() 
 	{
-        grpMenuShit.clear();
+    grpMenuShit.clear();
 
-        for (a in 0 ... menuItems.length) {
-         	var songText:Alphabet = new Alphabet(0, (70 * a) + 30, menuItems[a], true, false);
+    for (a in 0 ... menuItems.length) {
+      var songText:Alphabet = new Alphabet(0, (70 * a) + 30, menuItems[a], true, false);
 			songText.isMenuItem = true;
 			songText.targetY = a;
 			grpMenuShit.add(songText);
@@ -140,7 +140,8 @@ class PauseSubState extends MusicBeatSubstate
         curSelected = 0;
         changeSelection();
     }
-    var startTimer:FlxTimer;
+  var startTimer:FlxTimer;
+
 	override function update(elapsed:Float)
 	{
 		if (pauseMusic.volume < 0.5)
@@ -174,6 +175,8 @@ class PauseSubState extends MusicBeatSubstate
 					closePauseMenu();
 				case "Restart Song":
 					FlxG.resetState();
+				case "Chart Editor":
+				  FlxG.switchState(new ChartingState());
 				case "Exit to menu":
 					FlxG.switchState(new MainMenuState());
 				case "Change Difficulty":
@@ -182,15 +185,15 @@ class PauseSubState extends MusicBeatSubstate
                 case "Easy":
                 	PlayState.SONG = Song.loadFromJson(PlayState.SONG.song.toLowerCase() + "-easy", PlayState.SONG.song.toLowerCase());
                     PlayState.storyDifficulty = 0;
-                    
+
 					FlxG.switchState(new PlayState());
-					
+
 				case "Normal":
                 	PlayState.SONG = Song.loadFromJson(PlayState.SONG.song.toLowerCase(), PlayState.SONG.song.toLowerCase());
                     PlayState.storyDifficulty = 1;
-                    
+
 					FlxG.switchState(new PlayState());
-					
+
 				case "Hard":
                 	PlayState.SONG = Song.loadFromJson(PlayState.SONG.song.toLowerCase() + "-hard", PlayState.SONG.song.toLowerCase());
                     PlayState.storyDifficulty = 2;
