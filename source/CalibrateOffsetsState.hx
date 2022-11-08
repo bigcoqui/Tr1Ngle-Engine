@@ -66,14 +66,18 @@ class CalibrateOffsetsState extends MusicBeatState
 		menuBG.antialiasing = true;
 		add(menuBG);
 
-        a = new FlxText(0, 0, 0, "Press Space to start calibrating", 32);
+        a = new FlxText(0, 0, 0, "Press A to start calibrating", 32);
         a.screenCenter();
         add(a);
-        var b = new FlxText(10, 10, 0, "Press ESCAPE to cancel.", 32);
-        
+        var b = new FlxText(10, 10, 0, "Press B to cancel.", 32);
+
         add(b);
         curBeat = 0;
         beatHit();
+
+        #if android
+        addVirtualPad(NONE, A_B);
+        #end
     }
 
     function calcOffset()
@@ -89,10 +93,11 @@ class CalibrateOffsetsState extends MusicBeatState
     var tryAgain:Bool;
     var endAA:Bool;
     var soundLoops:Int = 0;
+
     public override function update(elapsed:Float)
     {
         super.update(elapsed);
-        if(!started && FlxG.keys.justPressed.SPACE)
+        if(!started && controls.ACCEPT)
         {
             started = true;
             remove(a);
@@ -127,7 +132,7 @@ class CalibrateOffsetsState extends MusicBeatState
         else if(started && loops <= 8)
         {
             Conductor.songPosition = FlxG.sound.music.time;
-            if(FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.ESCAPE)
+            if(FlxG.keys.justPressed.ANY && !controls.BACK)
             {
                 loops++;
 
@@ -165,7 +170,7 @@ class CalibrateOffsetsState extends MusicBeatState
 
                 if(offset < -300 || offset > 300)
                 {
-                    var uhh:FlxText = new FlxText(0, 0, 0, "Your offsets seems to be strange.\nPress ENTER to try again.\n", 16);
+                    var uhh:FlxText = new FlxText(0, 0, 0, "Your offsets seems to be strange.\nPress A to try again.\n", 16);
                     uhh.borderSize = 1.25;
                     uhh.borderQuality = 1;
                     uhh.borderStyle = FlxTextBorderStyle.OUTLINE;
@@ -175,7 +180,7 @@ class CalibrateOffsetsState extends MusicBeatState
                 }
                 else
                 {
-                    var urOffsets:FlxText = new FlxText(0, 0, 0, "Your offsets:\n" + offset + "ms\nPress ENTER to exit\n", 16);
+                    var urOffsets:FlxText = new FlxText(0, 0, 0, "Your offsets:\n" + offset + "ms\nPress A to exit\n", 16);
                     urOffsets.borderSize = 1.25;
                     urOffsets.borderQuality = 1;
                     urOffsets.borderStyle = FlxTextBorderStyle.OUTLINE;
@@ -184,7 +189,7 @@ class CalibrateOffsetsState extends MusicBeatState
                 }
                 endAA = true;
             }
-            if(FlxG.keys.justPressed.ENTER && endAA)
+            if(controls.ACCEPT && endAA)
             {
                 if(tryAgain)
                 {
@@ -208,7 +213,7 @@ class CalibrateOffsetsState extends MusicBeatState
                 else
                     i.color = FlxColor.WHITE;
         }
-        if(FlxG.keys.justPressed.ESCAPE)
+        if(controls.BACK)
         {
             FlxG.sound.music.stop();
             FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -222,6 +227,5 @@ class CalibrateOffsetsState extends MusicBeatState
                 i.color = FlxColor.GREEN;
             else
                 i.color = FlxColor.WHITE;
-        
     }
 }
