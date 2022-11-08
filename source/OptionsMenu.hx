@@ -55,7 +55,6 @@ class OptionsMenu extends MusicBeatState
 
 	override function create()
 	{
-		
 		var menuBG:Sprite = new Sprite().loadGraphics(Paths.image("menuDesat"));
 
 		menuBG.color = 0xFFea71fd;
@@ -87,7 +86,7 @@ class OptionsMenu extends MusicBeatState
 		changeSelection(0);
 
 		#if android
-		addVirtualPad(UP_DOWN, A_B);
+		addVirtualPad(FULL, A_B);
 		#end
 
 		super.create();
@@ -132,11 +131,10 @@ class OptionsMenu extends MusicBeatState
 				grpControls.clear();
 				for (i in 0 ... checkBoxesArray.length) 
 				{
-			        
 					remove(checkBoxesArray[i]);
 					checkBoxesArray[i].destroy();
 				}
-				
+
 				checkBoxesArray = [];
 
 				for (i in 0...options.length)
@@ -152,7 +150,7 @@ class OptionsMenu extends MusicBeatState
 				changeSelection(-1);
 			if (controls.DOWN_P)
 				changeSelection(1);
-			
+
 			if (isCat)
 			{
 				if (currentSelectedCat.getOptions()[curSelected].getAccept())
@@ -224,7 +222,7 @@ class OptionsMenu extends MusicBeatState
 						}
 				}
 			}
-			else if(controls.LEFT_PUI && isCat)
+			else if(controls.LEFT_P && isCat)
 			{
 				if(currentSelectedCat.getOptions()[curSelected].left())
 				{
@@ -233,7 +231,7 @@ class OptionsMenu extends MusicBeatState
 					grpControls.add(ctrl);
 					ctrl.isMenuItem = true;
 				}
-			}else if (controls.RIGHT_PUI && isCat)
+			}else if (controls.RIGHT_P && isCat)
 			{
 				if(currentSelectedCat.getOptions()[curSelected].right())
 				{
@@ -265,7 +263,6 @@ class OptionsMenu extends MusicBeatState
 			checkBoxesArray.push(checkbox);
 			if(!currentSelectedCat.getOptions()[i].withoutCheckboxes)
 				add(checkbox);
-			
 		}
 	}
 
