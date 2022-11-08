@@ -45,6 +45,10 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+	  #if android
+	  FlxG.android.preventDefaultKeys = [BACK];
+	  #end
+
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 		PlayerSettings.init();
 
