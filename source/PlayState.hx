@@ -1090,6 +1090,7 @@ class PlayState extends MusicBeatState
 			botAutoPlayAlert.scrollFactor.set();
 			add(botAutoPlayAlert);
 		}
+
 		if(FlxG.save.data.skillIssue)
 		{
 			var skillIssue = new FlxText(0, 0, 0, "skill issue mode activated", 16);
@@ -1108,6 +1109,14 @@ class PlayState extends MusicBeatState
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
+
+		// cool port watermark
+		var portTxt = new FlxText(0, 1100, 5);
+    portTxt.text = "PORTED BY THEORDA";
+    portTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+    portTxt.scrollFactor.set();
+    add(portTxt);
+
 		#if desktop
 		if(OpenFlAssets.exists(Paths.txt(SONG.song.toLowerCase() + "/info")))
 			{
@@ -1119,10 +1128,8 @@ class PlayState extends MusicBeatState
 				var songInfoBG:Sprite = new Sprite(0, 0).makeGraphics(Math.round(songInfoText.fieldWidth + 40), 130, FlxColor.BLACK);
 				songInfoBG.scrollFactor.set();
 				songInfoBG.screenCenter(Y);
-				//songInfoBG.alpha = 0.6;
 				songInfoBG.alpha = 0;
 				songInfoBG.x -= songInfoBG.width;
-				//songInfoText.alpha = 0.6;
 				songInfoText.x = songInfoBG.x + 20;
 				songInfoText.y = songInfoBG.y + 20;
 				songInfoText.alpha = 0;
@@ -1136,6 +1143,7 @@ class PlayState extends MusicBeatState
 				FlxTween.tween(songInfoText, {x: songInfoText.x - (songInfoBG.width + 100), alpha: 0}, 1, {ease: FlxEase.quartInOut, startDelay: 2.516666666666666666});
 			}
 		#end
+
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
