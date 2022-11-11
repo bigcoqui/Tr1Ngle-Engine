@@ -132,7 +132,7 @@ class CalibrateOffsetsState extends MusicBeatState
         else if(started && loops <= 8)
         {
             Conductor.songPosition = FlxG.sound.music.time;
-            if(FlxG.keys.justPressed.ANY && !controls.BACK)
+            if(FlxG.keys.justPressed.ANY && !controls.ACCEPT)
             {
                 loops++;
 
