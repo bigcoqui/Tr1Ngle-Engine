@@ -1111,7 +1111,7 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 
 		// cool port watermark
-		var portTxt = new FlxText(0, 1100, 5);
+		var portTxt = new FlxText(0, 50, 0);
     portTxt.text = "PORTED BY THEORDA";
     portTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
     portTxt.scrollFactor.set();
@@ -1150,6 +1150,7 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
+		portTxt.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
 		bgForNotes1.cameras = [camHUD];
