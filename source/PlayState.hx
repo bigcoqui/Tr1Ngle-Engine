@@ -1111,7 +1111,7 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 
 		// cool port watermark
-		var portTxt = new FlxText(0, 50, 0);
+		var portTxt = new FlxText(0, 900, 15);
     portTxt.text = "PORTED BY THEORDA";
     portTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
     portTxt.scrollFactor.set();
