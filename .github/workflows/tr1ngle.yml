@@ -54,8 +54,6 @@ jobs:
           haxelib install flixel-ui
           haxelib install hscript
           haxelib install flixel-addons
-          haxelib install hxCodec
-          haxelib install actuate
           haxelib list
 
       - name: Create Version Tag
